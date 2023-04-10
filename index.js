@@ -72,7 +72,7 @@ app.get('/', async (req,res) =>{
 app.listen(8999, () => {
 
 })
-app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
+app.get('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
   const interaction = req.body;
   if (!interaction.isChatInputCommand()) return;
 
