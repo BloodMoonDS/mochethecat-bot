@@ -31,6 +31,16 @@ const discord_api = axios.create({
   }
 });
 
+for (const file of commandFiles) {
+	const filePath = path.join(commandsPath, file);
+	const command = require(filePath);
+	// Set a new item in the Collection with the key as the command name and the value as the exported module
+	if ('data' in command && 'execute' in command) {
+		client.commands.set(command.data.name, command);
+	} else {
+		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+	}
+}
 
 
 
@@ -105,8 +115,23 @@ client.once(Events.ClientReady, c => {
 
 app.get('/register_commands', async (req,res) =>{
   
-  
-  
+  let slash_commands = [
+    {
+      "name": "yo",
+      "description": "replies with Yo!",
+      "options": []
+    },
+    {
+      "name": "dm",
+      "description": "sends user a DM",
+      "options": []
+    },
+    {
+      "name": "senddmto",
+      "description": "sends a DM to an specific user",
+      "options": []
+    }
+  ]
   try
   {
     // api docs - https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
@@ -129,7 +154,7 @@ const rest = new REST({ version: '10' }).setToken(token);
 	  // The put method is used to fully refresh all commands in the guild with the current set
 		const data = await rest.put(
 			Routes.applicationGuildCommands(clientId, guildId),
-			{ body: commands }
+			{ body: commands } + slash_commands
 	  );
     //let discord_response = await discord_api.put(
     //  `/applications/${APPLICATION_ID}/guilds/${GUILD_ID}/commands`,
@@ -154,16 +179,7 @@ const rest = new REST({ version: '10' }).setToken(token);
     return res.send(`${e.code} error from discord`)
   }
 })
-for (const file of commandFiles) {
-	const filePath = path.join(commandsPath, file);
-	const command = require(filePath);
-	// Set a new item in the Collection with the key as the command name and the value as the exported module
-	if ('data' in command && 'execute' in command) {
-		client.commands.set(command.data.name, command);
-	} else {
-		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
-	}
-}
+
 
 client.on(Events.InteractionCreate, async interaction => {
 	if (!interaction.isChatInputCommand()) return;
