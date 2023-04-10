@@ -10,10 +10,10 @@ prefix = ">>>";
 client.commands = new Collection();
 const commands = [];
 
-module.exports = {
+
 // Grab all the command files from the commands directory you created earlier
 
-async trigger(){
+
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 const ErrorMessage = "Dammint I couldn't execute that one command! Details:"
@@ -44,5 +44,5 @@ const rest = new REST({ version: '10' }).setToken(TOKEN);
 		console.error(error);
 	}
 })();
-}
-};
+
+
