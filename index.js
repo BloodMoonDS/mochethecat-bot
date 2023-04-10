@@ -1,4 +1,6 @@
-
+//required to do the file thing
+const fs = require('node:fs');
+const path = require('node:path');
 // const { clientId, guildId, token, publicKey } = require('./config.json');
 require('dotenv').config()
 const APPLICATION_ID = process.env.APPLICATION_ID 
@@ -8,6 +10,7 @@ const GUILD_ID = process.env.GUILD_ID
 
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
 const ErrorMessage = "Dammint I couldn't execute that one command! Details:"
 
 
@@ -16,13 +19,13 @@ const axios = require('axios')
 const express = require('express');
 const { InteractionType, InteractionResponseType, verifyKeyMiddleware } = require('discord-interactions');
 const client = new Client({ intents: [IntentsBitField.Flags.GuildModeration,IntentsBitField.Flags.GuildMessages ,IntentsBitField.Flags.MessageContent,IntentsBitField.Flags.GuildMessageTyping] })
-const fs = require('node:fs');
-const path = require('node:path');
+
 
 const app = express();
 // app.use(bodyParser.json());
 
 app.get('/register_commands', async (req,res) =>{ // I replaced the deploy-commands.js with the register url
+  
   // Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
   for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
