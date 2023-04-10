@@ -29,8 +29,7 @@
     "looks-same": "^8.1.0",
     "merge-images": "^2.0.0",
     "node": "^16.19.1",
-    "discord.js": "^14.7.1",
-    "pica": "^9.0.1"
+    "discord.js": "^14.7.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"
