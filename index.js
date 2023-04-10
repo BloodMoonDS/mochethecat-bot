@@ -130,6 +130,7 @@ app.get('/register_commands', async (req,res) =>{
     for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	commands.push(command.data.toJSON());
+  console.log(file);
     }
 
 // Construct and prepare an instance of the REST module
@@ -141,13 +142,13 @@ const rest = new REST({ version: '10' }).setToken(token);
 		console.log(`Started refreshing ${commands.length} application (/) commands.`);
     
 		// The put method is used to fully refresh all commands in the guild with the current set
-		const data = await rest.put(
-			Routes.applicationGuildCommands(clientId, guildId),
-			{ body: commands },
-		);
+		//const data = await rest.put(
+		//	Routes.applicationGuildCommands(clientId, guildId),
+		//	{ body: commands },
+	  //);
     let discord_response = await discord_api.put(
       `/applications/${APPLICATION_ID}/guilds/${GUILD_ID}/commands`,
-      slash_commands + data
+      slash_commands + { body: commands },
     )
 
 		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
