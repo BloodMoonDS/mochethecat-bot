@@ -6,11 +6,11 @@ const TOKEN = process.env.TOKEN
 const PUBLIC_KEY = process.env.PUBLIC_KEY || 'not set'
 const GUILD_ID = process.env.GUILD_ID 
 
-
+const { REST, Routes,Discord, Client, MessageEmbed, Application, Message, RichPresenceAssets, Presence, CommandInteraction, Intents, IntentsBitField, Collection, Events,GatewayIntentBits } = require("discord.js");
 const axios = require('axios')
 const express = require('express');
 const { InteractionType, InteractionResponseType, verifyKeyMiddleware } = require('discord-interactions');
-
+const client = new Client({ intents: [IntentsBitField.Flags.GuildModeration,IntentsBitField.Flags.GuildMessages ,IntentsBitField.Flags.MessageContent,IntentsBitField.Flags.GuildMessageTyping] })
 
 const app = express();
 // app.use(bodyParser.json());
@@ -66,10 +66,36 @@ app.post('/interactions', verifyKeyMiddleware(PUBLIC_KEY), async (req, res) => {
         }
       });
     }
+    if(interaction.data.name == 'senddmto'){
+      // https://discord.com/developers/docs/resources/user#create-dm
+      let c = (await discord_api.post(`/users/@me/channels`,{
+        recipient_id: interaction.member.user.id
+      })).data
+      try{
+        // https://discord.com/developers/docs/resources/channel#create-message
+        let res = await discord_api.post(`/channels/${c.id}/messages`,{
+          content:'Yo! I got your slash command. I am not able to respond to DMs just slash commands.',
+        })
+        console.log(res.data)
+      }catch(e){
+        console.log(e)
+      }
+
+      return res.send({
+        // https://discord.com/developers/docs/interactions/receiving-and-responding#responding-to-an-interaction
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data:{
+          content:'👍'
+        }
+      });
+    }
   }
 
 });
 
+client.once(Events.ClientReady, c => {
+	console.log(`Ready! Logged in as ${c.user.tag}`);
+});
 
 
 app.get('/register_commands', async (req,res) =>{
@@ -83,6 +109,13 @@ app.get('/register_commands', async (req,res) =>{
       "name": "dm",
       "description": "sends user a DM",
       "options": []
+    },
+    {
+      "name": "senddmto",
+      "description": "sends a DM to an specific user",
+      "options": [
+          
+      ]
     }
   ]
   try
@@ -111,3 +144,4 @@ app.listen(8999, () => {
 
 })
 
+client.login(TOKEN);
