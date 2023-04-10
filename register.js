@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { REST, Routes,Discord, Client, MessageEmbed, Application, Message, RichPresenceAssets, Presence, CommandInteraction, Intents, IntentsBitField, Collection, Events,GatewayIntentBits, ClientPresence, ClientPresenceStatus} = require("discord.js");
 const APPLICATION_ID = process.env.APPLICATION_ID;
 const TOKEN = process.env.TOKEN;
@@ -5,12 +6,14 @@ const PUBLIC_KEY = process.env.PUBLIC_KEY || 'not set';
 const GUILD_ID = process.env.GUILD_ID;
 const fs = require('node:fs');
 const path = require('node:path');
+const axios = require('axios')
+const express = require('express');
 const client = new Client({ intents: [IntentsBitField.Flags.GuildModeration,IntentsBitField.Flags.GuildMessages ,IntentsBitField.Flags.MessageContent,IntentsBitField.Flags.GuildMessageTyping] })
 prefix = ">>>";
 client.commands = new Collection();
 const commands = [];
 
-
+const app = express();
 // Grab all the command files from the commands directory you created earlier
 
 
