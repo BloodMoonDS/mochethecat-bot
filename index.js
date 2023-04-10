@@ -105,23 +105,8 @@ client.once(Events.ClientReady, c => {
 
 app.get('/register_commands', async (req,res) =>{
   
-  let slash_commands = [
-    {
-      "name": "yo",
-      "description": "replies with Yo!",
-      "options": []
-    },
-    {
-      "name": "dm",
-      "description": "sends user a DM",
-      "options": []
-    },
-    {
-      "name": "senddmto",
-      "description": "sends a DM to an specific user",
-      "options": []
-    }
-  ]
+  
+  
   try
   {
     // api docs - https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
@@ -144,7 +129,7 @@ const rest = new REST({ version: '10' }).setToken(token);
 	  // The put method is used to fully refresh all commands in the guild with the current set
 		const data = await rest.put(
 			Routes.applicationGuildCommands(clientId, guildId),
-			{ body: commands } + slash_commands
+			{ body: commands }
 	  );
     //let discord_response = await discord_api.put(
     //  `/applications/${APPLICATION_ID}/guilds/${GUILD_ID}/commands`,
