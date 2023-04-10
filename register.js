@@ -1,4 +1,4 @@
-const { Client ,REST, Routes } = require('discord.js');
+const { REST, Routes,Discord, Client, MessageEmbed, Application, Message, RichPresenceAssets, Presence, CommandInteraction, Intents, IntentsBitField, Collection, Events,GatewayIntentBits, ClientPresence, ClientPresenceStatus} = require("discord.js");
 const APPLICATION_ID = process.env.APPLICATION_ID;
 const TOKEN = process.env.TOKEN;
 const PUBLIC_KEY = process.env.PUBLIC_KEY || 'not set';
